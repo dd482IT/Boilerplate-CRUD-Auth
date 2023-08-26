@@ -1,7 +1,6 @@
 var Userdb = require('../model/model');
 
-
-exports.login = (req, res) =>{
+    exports.login = (req, res) =>{
     if(!req.body){
         res.status(400).send({ message : "Content can not be empty!"});
         return;
@@ -19,31 +18,28 @@ exports.login = (req, res) =>{
 
     const username = req.body.username
     const password = req.body.password
-    const UserAgent = req.header('User-Agent')
-    
-    Userdb.findOne({ username: username, password: password})
-        .then(user =>{
-            if(!user){
-                res.redirect("/admin")
-            } else {
-                if(user['password']){
-                    res.send("JCTF{mOngOdB_iS_A_wEbScaLe_dAtabAsE}")
-                } else {
+    try {    
+        Userdb.findOne({ Username: username, Password: password})
+            .then(user =>{
+                console.log(user);
+                if(!user){
                     res.redirect("/admin")
-                }
-            }
-            /*
-            if(!user['password']){
-                if(user['password'] === password){
-                        res.send("JCTF{mOngOdB_iS_A_wEbScaLe_dAtabAsE}")
                 } else {
+                    if(user['password']){
+                        res.send("JCTF{mOngOdB_iS_A_wEbScaLe_dAtabAsE}")
+                    } else {
                         res.redirect("/admin")
+                    }
                 }
-            } 
-            */
-        })
+            })
         .catch(err =>{
-            res.status(500).send({ success: false})
+            console.log(err)
+            res.redirect("/admin")
+            //res.status(500).send({ success: false})
         })
-
+    }
+    catch (error) {
+        console.log(err)
+        res.status(500).send({ success: false})
+    }
 }

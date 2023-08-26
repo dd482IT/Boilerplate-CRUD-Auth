@@ -6,16 +6,19 @@
 
 # Use root/example as user/password credentials
 version: '3.1'
-
 services:
-
   mongo:
-    image: mongo
+    # build: /WebDev/app/server/database/
+    image: mongo:latest
     restart: always
+    container_name: jctf4-web-placeholder-database
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
-
+    ports:
+    - 27017:27017
+    volumes:
+    - ./WebDev/app/server/database:/var/www/html/
   mongo-express:
     image: mongo-express
     restart: always
@@ -25,3 +28,13 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+  #mongosh --file <file.js> 
+  node-app: 
+    build: ./WebDev/app/
+    container_name: jctf4-web-placeholder-app
+    restart: always
+    depends_on:
+      - mongo
+      - mongo-express
+    ports:
+    - 3000:3000
