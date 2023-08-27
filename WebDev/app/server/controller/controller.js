@@ -1,7 +1,8 @@
-var Userdb = require('../model/model');
+const { Mongoose } = require('mongoose');
+const connectDB = require('../database/connection');
+var UserCol = require('../model/model');
 
-
-exports.login = (req, res) =>{
+    exports.login = (req, res) =>{
     if(!req.body){
         res.status(400).send({ message : "Content can not be empty!"});
         return;
@@ -16,34 +17,24 @@ exports.login = (req, res) =>{
         res.status(400).send({ message : "Password can not be empty!"});
         return;
     }
-
-    const username = req.body.username
-    const password = req.body.password
-    const UserAgent = req.header('User-Agent')
-    
-    Userdb.findOne({ username: username, password: password})
-        .then(user =>{
-            if(!user){
-                res.redirect("/admin")
+    // Retrieve Document 
+    // Incoming Password should be hasheh
+    // Only hashes should be stored when registering
+    UserCol.findOne({ Username: req.body.username}).then(user => {
+        if(user){
+            if(user.Password === req.body.password){
+                res.render('dashboard');
             } else {
-                if(user['password']){
-                    res.send("JCTF{mOngOdB_iS_A_wEbScaLe_dAtabAsE}")
-                } else {
-                    res.redirect("/admin")
-                }
+                res.status(500).send({message: err.message || "Password does not match" })
             }
-            /*
-            if(!user['password']){
-                if(user['password'] === password){
-                        res.send("JCTF{mOngOdB_iS_A_wEbScaLe_dAtabAsE}")
-                } else {
-                        res.redirect("/admin")
-                }
-            } 
-            */
-        })
-        .catch(err =>{
-            res.status(500).send({ success: false})
-        })
+        } else {
+            res.status(500).send({message: err.message || "User not found" })
+        }
+    }).catch(err=>{
+        res.status(500).send({message: err.message || "Error occured" })
+    })
 
+    exports.register = (req, res) =>{
+
+    }
 }

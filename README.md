@@ -20,3 +20,9 @@
 
 ## Credit
 * Developed by [Daniel Daszkiewicz](https://github.com/dd482IT)
+
+
+## Notes 
+## cd /var/ww/html/
+## mongosh --file db-setup.js --username root
+## 

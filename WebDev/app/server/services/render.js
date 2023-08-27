@@ -3,13 +3,15 @@ exports.homeRoutes = (req,res)=>{
 }
 
 exports.adminRoutes = (req,res)=>{
-    const UserAgent = req.header('User-Agent')
-    /*if(UserAgent != "Skynet"){
-        res.render('404')
-    } else {
+    // Make this check a function, if DB Connection not available, render 404. 
+        //const UserAgent = req.header('User-Agent')
+        //if(UserAgent != "Skynet"){
+            //res.redirect('/');
+        //    res.render('404')
+        //} else {
+            res.render('admin')
+        //}
         res.render('admin')
-    }*/
-    res.render('admin')
 }
 
 
