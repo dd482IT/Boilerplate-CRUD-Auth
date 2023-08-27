@@ -1,4 +1,6 @@
-var Userdb = require('../model/model');
+const { Mongoose } = require('mongoose');
+const connectDB = require('../database/connection');
+var UserCol = require('../model/model');
 
     exports.login = (req, res) =>{
     if(!req.body){
@@ -15,31 +17,24 @@ var Userdb = require('../model/model');
         res.status(400).send({ message : "Password can not be empty!"});
         return;
     }
+    // Retrieve Document 
+    // Incoming Password should be hasheh
+    // Only hashes should be stored when registering
+    UserCol.findOne({ Username: req.body.username}).then(user => {
+        if(user){
+            if(user.Password === req.body.password){
+                res.render('dashboard');
+            } else {
+                res.status(500).send({message: err.message || "Password does not match" })
+            }
+        } else {
+            res.status(500).send({message: err.message || "User not found" })
+        }
+    }).catch(err=>{
+        res.status(500).send({message: err.message || "Error occured" })
+    })
 
-    const username = req.body.username
-    const password = req.body.password
-    try {    
-        Userdb.findOne({ Username: username, Password: password})
-            .then(user =>{
-                console.log(user);
-                if(!user){
-                    res.redirect("/admin")
-                } else {
-                    if(user['password']){
-                        res.send("JCTF{mOngOdB_iS_A_wEbScaLe_dAtabAsE}")
-                    } else {
-                        res.redirect("/admin")
-                    }
-                }
-            })
-        .catch(err =>{
-            console.log(err)
-            res.redirect("/admin")
-            //res.status(500).send({ success: false})
-        })
-    }
-    catch (error) {
-        console.log(err)
-        res.status(500).send({ success: false})
+    exports.register = (req, res) =>{
+
     }
 }

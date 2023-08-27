@@ -1,6 +1,6 @@
 db = db.getSiblingDB("JCTF_CHALLENGE")
 
-db.createCollection("Users", {
+db.createCollection("users", {
     validator: {
         $jsonSchema: {
             bsonType: "object",   
@@ -22,7 +22,7 @@ db.createCollection("Users", {
     }
 })
 
-db.Users.insertMany([
+db.users.insertMany([
     {
         UUID: 1,
         Username: "dd482",
@@ -34,3 +34,11 @@ db.Users.insertMany([
         Password: "example",
     }
 ])
+
+db.createUser(
+    {
+      user: "MyApp",
+      pwd:  "example",   // or cleartext password
+      roles: [ { role: "readWrite", db: "JCTF_CHALLENGE" } ]
+    }
+  )
