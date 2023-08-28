@@ -14,4 +14,8 @@ exports.adminRoutes = (req,res)=>{
         res.render('admin')
 }
 
+exports.registerRoute = (req,res)=>{
+    res.render('register')
+}
+
 

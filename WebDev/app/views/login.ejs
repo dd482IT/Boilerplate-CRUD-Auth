@@ -1,0 +1,22 @@
+<!-- include header -->
+<%- include('include/_header') %>
+<!-- /include header -->
+
+<h1>Login</h1>
+<form method="post" action="admin">
+  <p>
+    <label for="username">Username:</label>
+  	<input type="text" name="username" placeholder="Username" required><br><br>
+  </p>
+  <p>
+    <label for="password">Password:</label>
+  	<input type="password" name="password" placeholder="Password" required><br><br>
+  </p>
+  <p>
+    <input type="submit" value="login">
+  </p>
+</form>
+
+<!-- include footer -->
+<%- include('include/_footer') %>
+<!-- /include footer -->

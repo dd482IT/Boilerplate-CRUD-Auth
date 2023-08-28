@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
-    UUID : {
+    Email : {
         type : String,
+        unqiue: true,
         required: true
     },
     Username : {
         type : String,
+        unqiue: true,   
         required: true
     },
     Password: {

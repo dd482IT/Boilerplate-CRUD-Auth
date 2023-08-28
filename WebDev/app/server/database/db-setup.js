@@ -5,9 +5,9 @@ db.createCollection("users", {
         $jsonSchema: {
             bsonType: "object",   
             properties: {
-                UUID: {
-                  bsonType: "int",
-                  description: "must be a string and is required"
+                Email: {
+                    bsonType: "string",
+                    description: "must be a string and is required"
                 },
                 Username: {
                     bsonType: "string",
@@ -22,18 +22,8 @@ db.createCollection("users", {
     }
 })
 
-db.users.insertMany([
-    {
-        UUID: 1,
-        Username: "dd482",
-        Password: "example",
-    },
-    {
-        UUID: 2,
-        Username: "john",
-        Password: "example",
-    }
-])
+db.users.createIndex( { "Username": 1}, { unique: true } )
+db.users.createIndex( { "Email":1 }, { unique: true } )
 
 db.createUser(
     {
