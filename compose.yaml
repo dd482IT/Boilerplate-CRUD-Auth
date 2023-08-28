@@ -33,8 +33,8 @@ services:
     build: ./WebDev/app/
     container_name: jctf4-web-placeholder-app
     restart: always
-    depends_on:
-      - mongo
-      - mongo-express
+    #depends_on:
+    #  - mongo
+    # - mongo-express
     ports:
     - 3000:3000
