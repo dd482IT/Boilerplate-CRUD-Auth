@@ -5,8 +5,12 @@
     
 
 <h1>Dashboard</h1>
-<h1>You got the flag!</h1>
-
+<h1>Nice job 
+    <% if (locals.username) { %>
+        <h2><%=locals.username%></h2>
+    <% } else { %>
+        <h2>[Username]</h2>
+    <% } %>
 <!--include footer-->
 <%-include('include/_footer')%>
 <!--/include footer-->

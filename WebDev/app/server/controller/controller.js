@@ -2,6 +2,8 @@ const { Mongoose } = require('mongoose');
 const bcrypt = require("bcrypt");
 const connectDB = require('../database/connection');
 var UserCol = require('../model/model');
+const session = require('express-session');
+//const store = new session.MemoryStore();
 
     exports.login = (req, res) =>{
     if(!req.body){
@@ -19,22 +21,29 @@ var UserCol = require('../model/model');
         return;
     }
 
-    UserCol.findOne({ Username: req.body.username}).then(user => {
+    const username = req.body.username;
+
+    UserCol.findOne({ Username: req.body.username}).maxTimeMS(100).then(user => {
         if(user){
-            bcrypt
+            bcrypt 
                 .compare(req.body.password, user.Password, function(err, result) {
                 if(result){
-                    // There should be a user ID here
-                    res.render('dashboard')
+                    
+                        req.session.authenticated = true;
+                        req.session.user = {username};
+                        res.session.locals = req.session.user;
+                        //res.json(req.session)
+                        console.log(req.session)
+                        res.render("dashboard", {username: username} );
                 } else {
                     res.status(500).send({message: "Password incorrect" })
                 }
             });
         } else {
-            res.status(500).send({message: err.message || "User not found" })
+            res.status(500).send({message: "User not found" })
         }
     }).catch(err=>{
-        res.status(500).send({message: err.message || "Error occured" })
+        res.status(500).send({message: "Error occured" })
     })
 }
 

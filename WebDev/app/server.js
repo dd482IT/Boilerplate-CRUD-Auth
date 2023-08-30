@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const bodyparser = require("body-parser");
@@ -29,7 +30,21 @@ app.use('/css',express.static(path.resolve(__dirname, "assets/css")))
 app.use('/img',express.static(path.resolve(__dirname, "assets/img")))
 app.use('/js',express.static(path.resolve(__dirname, "assets/js")))
 
+// Session
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+}))
 
-app.use('/',require('./server/routes/router'))
+
+
+app.use('/', require('./server/routes/router'))
 
 app.listen(PORT,()=> {console.log(`Server is running http://localhost:${PORT}`)})
+
+app.use(function(req, res, next) {
+    res.locals.user = req.session.user;
+    next();
+});
