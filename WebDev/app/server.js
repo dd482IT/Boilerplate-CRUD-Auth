@@ -10,25 +10,27 @@ const { MongoClient } = require('mongodb')
 const connectDB = require('./server/database/connection');
 const { connect } = require('http2');
 
-dotenv.config({path :'config.env'})
+dotenv.config({ path: 'config.env' })
 const PORT = process.env.PORT || 8080
 
 // Logs ƒ
 app.use(morgan('tiny'));
+app.use(express.json());
+
 
 //Connect to DB 
 var con = connectDB();
 
 // Parse request to body-parser
-app.use(bodyparser.urlencoded({extended:true}))
+app.use(bodyparser.urlencoded({ extended: true }))
 
 // Set view engine
 app.set("view engine", "ejs") // can change ejs to html, use path.resolve
 
 // Load Assets
-app.use('/css',express.static(path.resolve(__dirname, "assets/css")))
-app.use('/img',express.static(path.resolve(__dirname, "assets/img")))
-app.use('/js',express.static(path.resolve(__dirname, "assets/js")))
+app.use('/css', express.static(path.resolve(__dirname, "assets/css")))
+app.use('/img', express.static(path.resolve(__dirname, "assets/img")))
+app.use('/js', express.static(path.resolve(__dirname, "assets/js")))
 
 // Session
 app.use(session({
@@ -42,9 +44,9 @@ app.use(session({
 
 app.use('/', require('./server/routes/router'))
 
-app.listen(PORT,()=> {console.log(`Server is running http://localhost:${PORT}`)})
+app.listen(PORT, () => { console.log(`Server is running http://localhost:${PORT}`) })
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.locals.user = req.session.user;
     next();
 });

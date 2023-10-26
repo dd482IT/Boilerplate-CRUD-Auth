@@ -1,16 +1,11 @@
-
-<!--include header-->
+<!--include footer-->
 <%-include('include/_header')%>
-<!--/include header-->
-    
+<!--/include footer-->
 
-<h1>Dashboard</h1>
-<h1>Nice job 
-    <% if (locals.username) { %>
-        <h2><%=locals.username%></h2>
-    <% } else { %>
-        <h2>[Username]</h2>
-    <% } %>
+<header>
+    <h1> Welcome <%= username %></h1>
+</header>
+
 <!--include footer-->
 <%-include('include/_footer')%>
 <!--/include footer-->
